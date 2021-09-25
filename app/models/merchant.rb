@@ -9,6 +9,7 @@ class Merchant < ApplicationRecord
   has_many :invoices, through: :invoice_items
   has_many :transactions, through: :invoices
   has_many :customers, through: :invoices
+  has_many :bulk_discounts
 
   scope :by_status, lambda { |status|
     where(status: status)
