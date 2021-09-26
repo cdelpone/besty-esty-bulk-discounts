@@ -13,28 +13,51 @@ RSpec.describe 'Merchant Bulk Discount Edit Page' do
     it 'has a form to update the bulk discount' do
       within '#form' do
         expect(find_field('bulk_discount_quantity').value).to eq("#{@bulk_discountA.quantity}")
+        expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
 
         fill_in 'Quantity', with: '20'
-        fill_in 'Percentage', with: '1'
+        fill_in 'Percentage', with: '.5'
 
         click_button 'Submit'
       end
-      
       expect(current_path).to eq(merchant_bulk_discount_path(@merchant1, @bulk_discountA))
-      expect(page).to have_content('100%')
+      expect(page).to have_content('50%')
       expect(page).to have_content('20')
+      expect(page).to have_content('Successfully Updated')
     end
 
-    it 'handles incorrect form submission' do
-      # within '#form' do
-      #   expect(find_field('item_name').value).to eq(@item.name)
-      #   fill_in 'Name', with: ''
-      #   click_button 'Submit'
-      # end
-      # within '#form' do
-      #   expect(find_field('item_name').value).to eq(@item.name)
-      # end
-      # expect(page).to have_content('Do Better')
+    it 'handles incorrect quantity input' do
+      within '#form' do
+        expect(find_field('bulk_discount_quantity').value).to eq("#{@bulk_discountA.quantity}")
+        expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
+
+        fill_in 'Quantity', with: 'a'
+        fill_in 'Percentage', with: '.5'
+        
+        click_button 'Submit'
+      end
+      within '#form' do
+        expect(find_field('bulk_discount_quantity').value).to eq("#{@bulk_discountA.quantity}")
+        expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
+      end
+      expect(page).to have_content('Do Better')
+    end
+
+    it 'handles incorrect percentage input' do
+      within '#form' do
+        expect(find_field('bulk_discount_quantity').value).to eq("#{@bulk_discountA.quantity}")
+        expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
+
+        fill_in 'Quantity', with: '1'
+        fill_in 'Percentage', with: '125'
+
+        click_button 'Submit'
+      end
+      within '#form' do
+        expect(find_field('bulk_discount_quantity').value).to eq("#{@bulk_discountA.quantity}")
+        expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
+      end
+      expect(page).to have_content('Do Better')
     end
   end
 end

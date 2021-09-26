@@ -2,6 +2,6 @@
   <%= f.label :quantity %>
   <%= f.text_field :quantity %>
   <%= f.label :percentage %>
-  <%= f.number_field :percentage %>
+  <%= f.number_field :percentage, step: :any %>
   <%= f.submit 'Submit' %>
 <% end %>
