@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 # rspec spec/features/items/edit_spec.rb
 RSpec.describe 'Merchant Items Edit Page' do
