@@ -45,16 +45,3 @@ RSpec.describe 'Merchant Bulk Discounts Index Page' do
     end
   end
 end
-# it 'updates inv item status' do
-#   within "#inv_item-#{@invoice_item1.id}" do
-#     expect(find_field('invoice_item_status').value).to eq('pending')
-#     select 'packaged'
-#     click_on 'Update'
-#   end
-#   expect(current_path).to eq(merchant_invoice_path(@merchant, @invoice1))
-#
-#   within "#inv_item-#{@invoice_item1.id}" do
-#     expect(find_field('invoice_item_status').value).to eq('packaged')
-#     expect(page).to have_content('packaged')
-#   end
-# end

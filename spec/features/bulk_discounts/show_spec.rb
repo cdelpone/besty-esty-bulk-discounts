@@ -18,5 +18,13 @@ RSpec.describe 'Merchant Bulk Discount Show Page' do
       expect(page).to have_no_content('30%')
       expect(page).to have_no_content(@bulk_discountB.id)
     end
+
+    it 'links to update bulk discount' do
+      expect(page).to have_link('Update')
+
+      click_link 'Update'
+
+      expect(current_path).to eq(edit_merchant_bulk_discount_path(@merchant1, @bulk_discountA))
+    end
   end
 end
