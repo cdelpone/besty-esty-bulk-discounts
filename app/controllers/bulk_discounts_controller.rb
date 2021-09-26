@@ -14,9 +14,15 @@ class BulkDiscountsController < ApplicationController
   end
 
   def create
-    bulk_discount = BulkDiscount.new(bulk_discount_params.merge({ id: BulkDiscount.id, merchant_id: params[:merchant_id] }))
+    bulk_discount = BulkDiscount.new(bulk_discount_params.merge({ merchant_id: params[:merchant_id] }))
     redirect_to merchant_bulk_discounts_path(@merchant) if bulk_discount.save
   end
+
+  def destroy
+    BulkDiscount.find(params[:id]).destroy
+    redirect_to merchant_bulk_discounts_path(@merchant)
+  end
+
 
   # def edit; end
   private
