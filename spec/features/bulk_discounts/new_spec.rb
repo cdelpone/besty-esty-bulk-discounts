@@ -18,15 +18,14 @@ RSpec.describe 'Merchant Bulk Discounts New Page' do
 
     it 'redirects to merchant bulk discount index and shows new discount' do
       fill_in 'Quantity', with: 5
-      fill_in 'Percentage', with: 10
+      fill_in 'Percentage', with: 0.10
 
       click_button 'Submit'
       @merchant1.reload
 
       expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
-      # expect(Item.last.name).to eq('Best Item Ever')
-      # expect(page).to have_content('Best Item Ever')
-      # expect(Item.last.status).to eq('disabled')
+      expect(page).to have_content(5)
+      expect(page).to have_content("10%")
     end
   end
 end
