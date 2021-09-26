@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root to: 'welcome#index'
   resources :merchants, only: :index do
     get '/dashboard', controller: :merchants, action: :show, as: 'dashboard'
+    resources :bulk_discounts
     resources :items, except: [:delete]
     resources :invoices, only: %i[index show]
     resources :invoice_items, only: [:update]

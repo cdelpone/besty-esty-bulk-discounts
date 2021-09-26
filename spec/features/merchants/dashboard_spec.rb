@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 # rspec spec/features/merchants/dashboard_spec.rb
 RSpec.describe 'Merchant Dashboard Show Page' do
@@ -11,6 +9,8 @@ RSpec.describe 'Merchant Dashboard Show Page' do
     let!(:customer4) { create :customer }
     let!(:customer5) { create :customer }
     let!(:customer6) { create :customer }
+    let!(:bulk_discountA) { create :bulk_discount, { merchant_id: merchant1.id, quantity: 10, percentage: 0.20 }  }
+    let!(:bulk_discountB) { create :bulk_discount, { merchant_id: merchant1.id, quantity: 15, percentage: 0.30 }  }
     let!(:item1) { create :item, { merchant_id: merchant1.id } }
     let!(:item2) { create :item, { merchant_id: merchant1.id } }
     let!(:item3) { create :item, { merchant_id: merchant1.id } }
@@ -162,6 +162,15 @@ RSpec.describe 'Merchant Dashboard Show Page' do
 
       it 'orders items ready to ship by invoice created date oldest to newest' do
         expect(item2.name).to appear_before(item3.name)
+      end
+    end
+
+    describe 'bulk discount' do
+      it 'links to bulk discount index' do
+        click_on "My Bulk Discounts"
+
+        expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
+        save_and_open_page
       end
     end
   end
