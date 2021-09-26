@@ -170,7 +170,6 @@ RSpec.describe 'Merchant Dashboard Show Page' do
         click_on "My Bulk Discounts"
 
         expect(current_path).to eq(merchant_bulk_discounts_path(merchant1))
-        save_and_open_page
       end
     end
   end

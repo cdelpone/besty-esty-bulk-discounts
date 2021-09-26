@@ -1,0 +1,20 @@
+<%= render partial: 'shared/merchant_navtabs'  %>
+<h1>Bulk Discount Details</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Bulk Discount ID</th>
+      <th scope="col">Discount Percentage</th>
+      <th scope="col">Quantity Threshold</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><%= @bulk_discount.id %></td>
+      <td><%= number_to_percentage(@bulk_discount.percentage * 100, precision: 0) %></td>
+      <td><%= @bulk_discount.quantity %></td>
+      <td><%= link_to 'Update', edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %></td>
+    </tr>
+  </tbody>
+</table>

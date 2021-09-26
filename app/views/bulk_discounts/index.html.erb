@@ -1,19 +1,27 @@
 <%= render partial: 'shared/merchant_navtabs'  %>
-<h1>Merchant Bulk Discount Details</h1>
+<h1>Merchant Bulk Discounts Details</h1>
+
+<p><%= link_to "Create New Discount", new_merchant_bulk_discount_path(@merchant) %></p>
+
 <table class="table">
   <thead>
     <tr>
       <th scope="col">Bulk Discount ID</th>
       <th scope="col">Discount Percentage</th>
       <th scope="col">Quantity Threshold</th>
+      <th scope="col">Action</th>
     </tr>
   </thead>
   <tbody>
     <% @bulk_discounts.each do |discount| %>
     <tr>
       <td><%= link_to discount.id, merchant_bulk_discount_path(@merchant, discount) %></td>
-      <td><%= discount.percentage %></td>
+      <td><%= number_to_percentage(discount.percentage * 100, precision: 0) %></td>
       <td><%= discount.quantity %></td>
+      <td><div id="bulk_discount-<%= discount.id %>">
+      <%= link_to "Delete", merchant_bulk_discount_path(@merchant, discount), method: :delete %>
+    </div></td>
+
     </tr>
     <% end %>
   </tbody>
