@@ -34,5 +34,27 @@ RSpec.describe 'Merchant Bulk Discounts Index Page' do
       expect(current_path).to eq(new_merchant_bulk_discount_path(@merchant1))
     end
 
+    it 'deletes a bulk discount' do
+      within "#bulk_discount-#{@bulk_discountA.id}" do
+        expect(page).to have_link('Delete')
+
+        click_link 'Delete'
+      end
+      expect(current_path).to eq(merchant_bulk_discounts_path(@merchant1))
+      expect(page).to have_no_content(@bulk_discountA)
+    end
   end
 end
+# it 'updates inv item status' do
+#   within "#inv_item-#{@invoice_item1.id}" do
+#     expect(find_field('invoice_item_status').value).to eq('pending')
+#     select 'packaged'
+#     click_on 'Update'
+#   end
+#   expect(current_path).to eq(merchant_invoice_path(@merchant, @invoice1))
+#
+#   within "#inv_item-#{@invoice_item1.id}" do
+#     expect(find_field('invoice_item_status').value).to eq('packaged')
+#     expect(page).to have_content('packaged')
+#   end
+# end
