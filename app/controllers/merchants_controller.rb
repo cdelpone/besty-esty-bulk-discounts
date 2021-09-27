@@ -2,7 +2,6 @@
 
 class MerchantsController < ApplicationController
   before_action :current_merchant, only: :show
-  before_action :holiday_api_data
 
   def index
     @merchants = Merchant.all

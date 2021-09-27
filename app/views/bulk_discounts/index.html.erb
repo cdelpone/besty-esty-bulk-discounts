@@ -28,16 +28,11 @@
 
 <table class="table">
   <thead>
-    <tr>
-      <th scope="col">Upcoming Holidays:</th>
-    </tr>
+    <tr><th scope="col">Upcoming Holidays</th></tr>
   </thead>
   <tbody>
     <% @holiday_api_data.name_and_date.each do |set| %>
-    <tr>
-      <td><%= set %></td>
-    </tr>
+    <tr><td><%= set %></td></tr>
     <% end %>
-
   </tbody>
 </table>

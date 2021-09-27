@@ -1,4 +1,3 @@
-require 'faraday'
 require 'json'
 
 class PublicHolidaysService
@@ -18,12 +17,6 @@ class PublicHolidaysService
   def holiday_date
     holiday_data_info.map do |holiday|
       holiday[:date]
-    end
-  end
-
-  def holiday_data
-    holiday_data_info.map do |holiday|
-      "#{holiday[:name]} #{holiday[:date]}"
     end
   end
 

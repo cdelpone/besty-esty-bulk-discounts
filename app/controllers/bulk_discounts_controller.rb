@@ -1,6 +1,5 @@
 class BulkDiscountsController < ApplicationController
   before_action :current_merchant
-  before_action :holiday_api_data
 
   def index
     @bulk_discounts = @merchant.bulk_discounts
