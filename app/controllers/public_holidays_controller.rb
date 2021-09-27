@@ -1,0 +1,3 @@
+class PublicHolidaysController < ApplicationController
+
+end

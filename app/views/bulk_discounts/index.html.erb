@@ -21,8 +21,18 @@
       <td><div id="bulk_discount-<%= discount.id %>">
       <%= link_to "Delete", merchant_bulk_discount_path(@merchant, discount), method: :delete %>
     </div></td>
-
     </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<table class="table">
+  <thead>
+    <tr><th scope="col">Upcoming Holidays</th></tr>
+  </thead>
+  <tbody>
+    <% @holiday_api_data.name_and_date.each do |set| %>
+    <tr><td><%= set %></td></tr>
     <% end %>
   </tbody>
 </table>

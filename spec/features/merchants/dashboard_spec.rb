@@ -64,6 +64,13 @@ RSpec.describe 'Merchant Dashboard Show Page' do
     let!(:inv_item16) { create :invoice_item, { item_id: item3.id, invoice_id: invoice16.id, status: 1 } }
 
     before :each do
+      @json_response = File.read('spec/fixtures/response.json')
+
+      stub_request(:get, "https://date.nager.at/api/v3/NextPublicHolidays/us").
+      to_return(status: 200, body: @json_response, headers: {})
+
+      @service = PublicHolidaysService.new
+
       visit merchant_dashboard_path(merchant1.id)
     end
 
