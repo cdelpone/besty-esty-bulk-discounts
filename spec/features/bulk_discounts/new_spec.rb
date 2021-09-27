@@ -3,6 +3,13 @@ require 'rails_helper'
 RSpec.describe 'Merchant Bulk Discounts New Page' do
   describe 'Merchant Bulk Discounts New Page' do
     before :each do
+      @json_response = File.read('spec/fixtures/response.json')
+
+      stub_request(:get, "https://date.nager.at/api/v3/NextPublicHolidays/us").
+      to_return(status: 200, body: @json_response, headers: {})
+
+      @service = PublicHolidaysService.new
+
       @merchant1 = create :merchant
       @bulk_discountA = create :bulk_discount, { merchant_id: @merchant1.id, quantity: 10, percentage: 0.20 }
       visit new_merchant_bulk_discount_path(@merchant1)
