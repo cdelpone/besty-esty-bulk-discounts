@@ -1,18 +1,23 @@
 <%= render partial: 'shared/merchant_navtabs'  %>
-<h1>Invoice Number: <%= @invoice.id %></h1>
-<h4>Invoice Details</h4>
+<h1>Invoice Details</h1>
 <div class="container">
+  <div class="row border">
+    <div class="col border">
+      <p>Invoice Number: <%= @invoice.id %></p>
+    </div>
+    <div class="col border">
+      <p>Customer Name: <%= @invoice.customer.full_name %></p>
+    </div>
+    <div class="col border">
+      <p>Total Revenue After Discounts Applied: <%= number_to_currency(@invoice.total_revenue) %></p>
+    </div>
+  </div>
   <div class="row border">
     <div class="col border">
       <p>Invoice Status: <%= @invoice.status %></p>
     </div>
     <div class="col border">
       <p>Created at: <%= @invoice.created_at.strftime("%A, %B %e, %Y") %></p>
-    </div>
-  </div>
-  <div class="row border">
-    <div class="col border">
-      <p>Customer Name: <%= @invoice.customer.full_name %></p>
     </div>
     <div class="col border">
       <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue) %></p>

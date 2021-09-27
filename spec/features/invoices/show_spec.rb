@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 # rspec spec/features/invoices/show_spec.rb
 RSpec.describe 'Merchant Invoice Show Page' do
@@ -36,7 +34,7 @@ RSpec.describe 'Merchant Invoice Show Page' do
       expect(page).to have_content('$150.00')
     end
 
-    context 'Merchant Invoice Show Page - Invoice Item Information' do
+    context 'Invoice Item Information' do
       it "lists all invoice items' names, quantity, price, status" do
         expect(page).to have_content(@invoice_item1.item.name)
         expect(page).to have_content(@invoice_item1.quantity)
@@ -59,5 +57,14 @@ RSpec.describe 'Merchant Invoice Show Page' do
         end
       end
     end
+
+    context 'Invoice & Bulk Discounts' do
+      it 'displays revenue with discounts and without discounts' do
+        save_and_open_page
+        expect(page).to have_content('Total Revenue')
+        expect(page).to have_content('Total Revenue After Discounts Applied')
+      end
+    end
+
   end
 end
