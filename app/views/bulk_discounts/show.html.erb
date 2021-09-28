@@ -13,7 +13,7 @@
     <tr>
       <td><%= @bulk_discount.id %></td>
       <td><%= number_to_percentage(@bulk_discount.percentage * 100, precision: 0) %></td>
-      <td><%= @bulk_discount.quantity %></td>
+      <td><%= @bulk_discount.threshold %></td>
       <td><%= link_to 'Update', edit_merchant_bulk_discount_path(@merchant, @bulk_discount) %></td>
     </tr>
   </tbody>

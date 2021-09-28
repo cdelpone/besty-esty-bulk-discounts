@@ -29,4 +29,8 @@ class Invoice < ApplicationRecord
   def total_revenue
     invoice_items.revenue
   end
+
+  def total_discounted_revenue
+  #   invoice_items.discount_revenue
+  end
 end

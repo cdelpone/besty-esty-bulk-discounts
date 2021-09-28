@@ -1,8 +1,6 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 require 'set'
-# rspec spec/services/github_service_spec.rb
+# rspec spec/services/github_client_spec.rb
 RSpec.describe 'github api' do
   describe 'repo name' do
     let(:github_response) { GitHubClient.repo_info }
@@ -20,28 +18,28 @@ RSpec.describe 'github api' do
     end
   end
 
-  describe 'repo contributors' do
-    let(:repo_contributors) { GitHubClient.contribution_stats }
-
-    it 'returns repo contributors' do
-      contribution_stats = [
-        {
-          total: 10,
-          author: { login: 'Lisa Miller' }
-        },
-        {
-          total: 12,
-          author: { login: 'Catherine Duke' }
-        }
-      ]
-
-      stub_request(:get, 'https://api.github.com/repos/tannerdale/little-esty-shop/stats/contributors')
-        .to_return(body: contribution_stats.to_json)
-
-      expect(repo_contributors).to be_kind_of(Set)
-      expect(repo_contributors.length).to eq(2)
-    end
-  end
+  # describe 'repo contributors' do
+  #   let(:repo_contributors) { GitHubClient.contribution_stats }
+  #
+  #   it 'returns repo contributors' do
+  #     contribution_stats = [
+  #       {
+  #         total: 10,
+  #         author: { login: 'Lisa Miller' }
+  #       },
+  #       {
+  #         total: 12,
+  #         author: { login: 'Catherine Duke' }
+  #       }
+  #     ]
+  #
+  #     stub_request(:get, 'https://api.github.com/repos/tannerdale/little-esty-shop/stats/contributors')
+  #       .to_return(body: contribution_stats.to_json)
+  #
+  #     expect(repo_contributors).to be_kind_of(Set)
+  #     expect(repo_contributors.length).to eq(2)
+  #   end
+  # end
 
   describe 'repo pulls' do
     let(:repo_pulls) { GitHubClient.repo_pulls }

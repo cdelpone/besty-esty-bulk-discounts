@@ -22,6 +22,9 @@ RSpec.describe 'Merchant Invoice Show Page' do
       @invoice_item3 = create :invoice_item,
                               { invoice_id: @invoice2.id, item_id: @item3.id, unit_price: 200, quantity: 1, status: 2 }
 
+      @bulk_discountA = create :bulk_discount, { merchant_id: @merchant.id, threshold: 10, percentage: 0.20 }
+      @bulk_discountB = create :bulk_discount, { merchant_id: @merchant.id, threshold: 15, percentage: 0.30 }
+
       visit merchant_invoice_path(@merchant, @invoice1)
     end
 
@@ -31,6 +34,7 @@ RSpec.describe 'Merchant Invoice Show Page' do
       expect(page).to have_content('Saturday, September 18, 2021')
       expect(page).to have_content(@invoice1.customer.full_name)
       expect(page).to have_content(@invoice1.total_revenue)
+      require "pry"; binding.pry
       expect(page).to have_content('$150.00')
     end
 
@@ -46,6 +50,7 @@ RSpec.describe 'Merchant Invoice Show Page' do
       it 'updates inv item status' do
         within "#inv_item-#{@invoice_item1.id}" do
           expect(find_field('invoice_item_status').value).to eq('pending')
+
           select 'packaged'
           click_on 'Update'
         end
@@ -60,7 +65,6 @@ RSpec.describe 'Merchant Invoice Show Page' do
 
     context 'Invoice & Bulk Discounts' do
       it 'displays revenue with discounts and without discounts' do
-        save_and_open_page
         expect(page).to have_content('Total Revenue')
         expect(page).to have_content('Total Revenue After Discounts Applied')
       end
