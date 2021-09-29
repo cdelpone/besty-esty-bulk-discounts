@@ -21,18 +21,18 @@ class InvoiceItem < ApplicationRecord
   end
 
   def discount_applied
-    if item.merchant.bulk_discounts.select(:percentage).nil?
-      return revenue
-    else
-      item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.percentage
-    end
+    item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last
   end
 
   def discount_id_applied
-    item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.id
+    discount_applied.id
   end
 
   def discount_subtotal
-    (revenue * (discount_applied / 100.00)).round(2)
+    if discount_applied.percentage.nil?
+      0
+    else
+      (revenue * (discount_applied.percentage / 100.00)).round(2)
+    end
   end
 end
