@@ -25,14 +25,20 @@ class InvoiceItem < ApplicationRecord
   end
 
   def discount_id_applied
-    discount_applied.id
+    # discount_applied.id
   end
 
   def discount_subtotal
-    if discount_applied.percentage.nil?
-      0
+    if discount_applied.nil?
+      revenue
     else
       (revenue * (discount_applied.percentage / 100.00)).round(2)
     end
   end
 end
+# <% @invoice_items.each do |inv_item|  %>
+#   <% if inv_item.discount_applied %>
+#   <p>no discount applied </p>
+#   <% else %>
+#   <% end %>
+# <% end %>
