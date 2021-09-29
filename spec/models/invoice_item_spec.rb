@@ -20,11 +20,12 @@ RSpec.describe InvoiceItem, type: :model do
   describe 'scopes and class methods' do
     let(:invoice) { create :invoice }
     let!(:merchant) { create :merchant }
+    let!(:merchant2) { create :merchant }
     let!(:customer) { create :customer }
     let!(:customer2) { create :customer }
     let!(:item1) { create :item, { merchant_id: merchant.id } }
     let!(:item2) { create :item, { merchant_id: merchant.id } }
-    let!(:item3) { create :item, { merchant_id: merchant.id } }
+    let!(:item3) { create :item, { merchant_id: merchant2.id } }
     let!(:invoice1) { create :invoice, { customer_id: customer.id } }
     let!(:invoice2) { create :invoice, { customer_id: customer2.id } }
     let!(:invoice3) { create :invoice, { customer_id: customer2.id } }
@@ -32,7 +33,7 @@ RSpec.describe InvoiceItem, type: :model do
     let!(:transaction2) { create :transaction, { invoice_id: invoice2.id, result: 0 } }
     let!(:inv_item1) { create :invoice_item, { item_id: item1.id, invoice_id: invoice1.id, status: 0, quantity: 3, unit_price: 100 } }
     let!(:inv_item2) { create :invoice_item, { item_id: item2.id, invoice_id: invoice1.id, status: 1, quantity: 2, unit_price: 100 } }
-    let!(:inv_item3) { create :invoice_item, { item_id: item3.id, invoice_id: invoice2.id, status: 2, quantity: 1, unit_price: 150 } }
+    let!(:inv_item3) { create :invoice_item, { item_id: item3.id, invoice_id: invoice1.id, status: 2, quantity: 1, unit_price: 150 } }
 
     it 'has not shipped items' do
       expect(InvoiceItem.not_shipped).to eq([inv_item1, inv_item2])
@@ -49,7 +50,9 @@ RSpec.describe InvoiceItem, type: :model do
     it 'can return correct discount applied' do
       bulk_discountA = create :bulk_discount, { merchant_id: merchant.id, threshold: 7, percentage: 25 }
       bulk_discountB = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
+      bulk_discountC = create :bulk_discount, { merchant_id: merchant2.id, threshold: 2, percentage: 50 }
 
+      expect(inv_item1.revenue).to eq(300)
       expect(inv_item1.discount_applied.percentage).to eq(50)
       expect(inv_item1.discount_applied).to eq(bulk_discountB)
       expect(inv_item1.discount_applied).not_to eq(bulk_discountA)
