@@ -24,6 +24,10 @@ class InvoiceItem < ApplicationRecord
     item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.percentage
   end
 
+  def discount_id_applied
+    item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.id
+  end
+
   def discount_subtotal
     (revenue * (discount_applied / 100.00)).round(2)
   end

@@ -27,7 +27,11 @@ class Invoice < ApplicationRecord
     invoice_items.revenue
   end
 
-  def discounted_revenue
+  def discounted_from_revenue
    invoice_items.sum { |invoice_item| invoice_item.discount_subtotal }
+  end
+
+  def total_discounted_revenue
+    total_revenue - discounted_from_revenue
   end
 end
