@@ -42,11 +42,11 @@
       <td><%= inv_item.item.name %></td>
       <td><%= inv_item.quantity %></td>
       <td><%= number_to_currency(inv_item.unit_price.fdiv(100)) %></td>
-        <% if inv_item.discount_applied %>
-        <td><%= link_to inv_item.discount_applied.id, merchant_bulk_discount_path(@merchant, inv_item.discount_applied.id) %></td>
+      <td><% if inv_item.discount_applied %>
+        <%= link_to inv_item.discount_applied.id, merchant_bulk_discount_path(@merchant, inv_item.discount_applied.id) %>
         <% else %>
         <p>no discount applied </p>
-        <% end %>
+        <% end %></td>
       <td><div id="inv_item-<%= inv_item.id %>">
           <%= form_with model: [@merchant, inv_item], local: true do |f| %>
             <%= f.select(:status, ['pending', 'packaged', 'shipped'], value: inv_item.status) %>
