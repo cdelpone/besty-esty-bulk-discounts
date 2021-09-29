@@ -263,8 +263,6 @@ RSpec.describe Merchant, type: :model do
     it 'has next_id' do
       expected = Merchant.maximum(:id).next
       expect(Merchant.next_id).to eq(expected)
-      # expect(Merchant.bulk_discount).to eq(expected)
-
     end
   end
 end
