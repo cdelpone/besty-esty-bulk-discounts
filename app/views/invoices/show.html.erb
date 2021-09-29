@@ -10,11 +10,11 @@
     </div>
     <div class="col border">
       <p>Total Revenue After Discounts Applied:
+        <%= number_to_currency(@invoice.total_discounted_revenue) %>
         <% @invoice_items.each do |inv_item|  %>
-          <% if !inv_item.discount_applied.nil? %>
-            <%= number_to_currency(@invoice.total_discounted_revenue) %>
+          <% if inv_item.discount_applied.nil? %>
+          <p>no discount applied </p>
           <% else %>
-            <p>no discount applied </p>
           <% end %>
         <% end %>
     </div>
