@@ -50,8 +50,10 @@ RSpec.describe InvoiceItem, type: :model do
       bulk_discountA = create :bulk_discount, { merchant_id: merchant.id, threshold: 7, percentage: 25 }
       bulk_discountB = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
 
-      expect(inv_item1.discount_applied).to eq(50)
-      expect(inv_item1.discount_applied).not_to eq(25)
+      expect(inv_item1.discount_applied.percentage).to eq(50)
+      expect(inv_item1.discount_applied).to eq(bulk_discountB)
+      expect(inv_item1.discount_applied).not_to eq(bulk_discountA)
+      expect(inv_item1.discount_applied.percentage).not_to eq(25)
     end
 
     it 'can return discount subtotal' do
