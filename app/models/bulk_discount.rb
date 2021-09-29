@@ -1,5 +1,6 @@
 class BulkDiscount < ApplicationRecord
   belongs_to :merchant
+
   validates :threshold,
             numericality: { only_integer: true,
                             greater_than_or_equal_to: 1 }
