@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class InvoiceItem < ApplicationRecord
   self.primary_key = :id
 
@@ -17,4 +15,16 @@ class InvoiceItem < ApplicationRecord
   scope :revenue, lambda {
     sum('unit_price * quantity')
   }
+
+  def revenue
+    unit_price * quantity
+  end
+
+  def discount_applied
+    item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.percentage
+  end
+
+  def discount_subtotal
+    (revenue * (discount_applied / 100.00)).round(2)
+  end
 end

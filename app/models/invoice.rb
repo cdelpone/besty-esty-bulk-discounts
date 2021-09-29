@@ -1,12 +1,9 @@
-# frozen_string_literal: true
-
 class Invoice < ApplicationRecord
   self.primary_key = :id
 
   belongs_to :customer
   has_many :invoice_items, dependent: :destroy
   has_many :items, through: :invoice_items
-  has_many :merchants, through: :items
   has_many :transactions, dependent: :destroy
 
   enum status: ['in progress', 'completed', 'cancelled']
@@ -30,7 +27,7 @@ class Invoice < ApplicationRecord
     invoice_items.revenue
   end
 
-  def total_discounted_revenue
-  #   invoice_items.discount_revenue
+  def discounted_revenue
+   invoice_items.sum { |invoice_item| invoice_item.discount_subtotal }
   end
 end

@@ -1,5 +1,6 @@
 class Merchant < ApplicationRecord
   self.primary_key = :id
+
   validates_presence_of :name
 
   has_many :items, dependent: :destroy
@@ -55,13 +56,5 @@ class Merchant < ApplicationRecord
       .merge(Invoice.total_revenues)
       .group(:id)
       .order(revenue: :desc).limit(5)
-  end
-
-  def bulk_discount
-    # require "pry"; binding.pry
-    # invoice_items
-    #   .merge(InvoiceItem.not_shipped)
-    #   .select('items.name AS name, invoices.id AS invoices_id, invoices.created_at AS invoices_created_at')
-    #   .order(:invoices_created_at)
   end
 end
