@@ -24,7 +24,7 @@ RSpec.describe 'Merchant Bulk Discounts New Page' do
 
     it 'redirects to merchant bulk discount index and shows new discount' do
       fill_in 'Threshold', with: 5
-      fill_in 'Percentage', with: 0.10
+      fill_in 'Percentage', with: 10
 
       click_button 'Submit'
       @merchant1.reload

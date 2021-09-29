@@ -16,7 +16,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page' do
         expect(find_field('bulk_discount_percentage').value).to eq("#{@bulk_discountA.percentage}")
 
         fill_in 'Threshold', with: '20'
-        fill_in 'Percentage', with: '.5'
+        fill_in 'Percentage', with: '50'
 
         click_button 'Submit'
       end
@@ -50,7 +50,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page' do
 
         fill_in 'Threshold', with: '1'
         fill_in 'Percentage', with: '125'
- 
+
         click_button 'Submit'
       end
       within '#form' do
