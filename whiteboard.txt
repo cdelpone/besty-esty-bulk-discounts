@@ -4,6 +4,94 @@
   <li class="nav-item"><p class="nav-link px-2 text-muted">Collaborators: <%= @github_api_data.repo_names_and_commits.to_sentence %>, generating <%= @github_api_data.pulls_count %> pull requests.</p></li>
 <% end %>
 
+###invoice model test set up
+it 'finds discount eligible items' do
+  merchant = create :merchant
+  merchant2 = create :merchant
+  customer = create :customer
+  invoice1 = create :invoice, { customer_id: customer.id, created_at: DateTime.new(2021, 9, 18) }
+  invoice2 = create :invoice, { customer_id: customer.id, created_at: DateTime.new(2021, 9, 17) }
+  item1 = create :item, { merchant_id: merchant.id }
+  item2 = create :item, { merchant_id: merchant.id }
+  item3 = create :item, { merchant_id: merchant.id }
+  item4 = create :item, { merchant_id: merchant.id }
+  inv_item1 = create :invoice_item, { invoice_id: invoice1.id, item_id: item1.id, unit_price: 30, quantity: 3, status: 0 }
+  # inv_item1 - 90
+  inv_item2 = create :invoice_item, { invoice_id: invoice1.id, item_id: item2.id, unit_price: 40, quantity: 1, status: 1 }
+  # inv_item2 - 40
+  inv_item3 = create :invoice_item, { invoice_id: invoice1.id, item_id: item3.id, unit_price: 10, quantity: 3, status: 2 }
+  # inv_item3 - 30
+  inv_item4 = create :invoice_item, { invoice_id: invoice1.id, item_id: item4.id, unit_price: 20, quantity: 3, status: 2 }
+  # inv_item4 - 60
+  inv_item4 = create :invoice_item, { invoice_id: invoice2.id, item_id: item4.id, unit_price: 20, quantity: 3, status: 2 }
+  # inv_item4 - 60
+  bulk_discountA = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 25 }
+#invoice1 = total of 180 with a 25% discount on threshold of 2, to be xxx
+#invoice2 = total of 60 with a 25% discount on threshold of 2, to be xxx
+  expect(invoice1.total_revenue).to eq(220)
+  expect(invoice1.discounted_revenue).to eq(90)
+  expect(invoice1.total_revenue).to eq(60)
+  expect(invoice2.discounted_revenue).to eq(90)
+  bulk_discountB = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
+  bulk_discountB = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
+# #should apply the higher discount percentage
+# #invoice1 = total of 180 with a 50% discount on threshold of 2, to be xxx
+# #invoice2 = total of 60 with a 50% discount on threshold of 2, to be xxx
+#     expect(invoice1.discounted_revenue).to eq(90)
+#     expect(invoice2.discounted_revenue).to eq(90)
+#     bulk_discountC = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
+#     bulk_discountD = create :bulk_discount, { merchant_id: merchant.id, threshold: 2, percentage: 50 }
+end
+end
+end
+
+
+### Invoice_item model method for AR
+def items_eligible_for_discounts
+  joins(item: :bulk_discounts)
+  .select('bulk_discounts.id, bulk_discounts.percentage AS percentage, invoice_items.*')
+  .where('invoice_items.quantity >= bulk_discounts.threshold')
+  .order(percentage: :desc)
+end
+
+## invoice model methods
+ def inv_item_discounts
+   invoice_items.eligible_for_discounts
+ end
+
+ def discounts_and_discounted_total
+   discounted_info
+ end
+
+### Trying to use AR
+# inv2.items.joins(merchant: :bulk_discounts).select('invoice_items.quantity AS quantity, bulk_discounts.threshold AS threshold, invoice_items.id AS inv_item_id').where('quantity > threshold').first.inv_item_id
+
+# inv2.items.joins(merchant: :bulk_discounts).select('invoice_items.quantity AS quantity, bulk_discounts.threshold AS threshold').where('quantity > threshold')
+
+# invoice_items.joins(:bulk_discounts).select('invoice_items.quantity AS quantity, invoice_items.unit_price AS unit_price, bulk_discounts.threshold AS threshold')
+
+# irb(main):037:0> merchant1.invoice_items.select('invoice_items.quantity').where('invoice_items.quantity > 2')
+#   InvoiceItem Load (6.7ms)  SELECT  invoice_items.quantity FROM "invoice_items" INNER JOIN "items" ON "invoice_items"."item_id" = "items"."id" WHERE "items"."merchant_id" = $1 AND (invoice_items.quantity > 2) LIMIT $2  [["merchant_id", 1], ["LIMIT", 11]]
+# => #<ActiveRecord::AssociationRelation [#<InvoiceItem id: nil, quantity: 9>, #<InvoiceItem id: nil, quantity: 4>, #<InvoiceItem id: nil, quantity: 10>, #<InvoiceItem id: nil, quantity: 6>, #<InvoiceItem id: nil, quantity: 4>, #<InvoiceItem id: nil, quantity: 10>, #<InvoiceItem id: nil, quantity: 7>, #<InvoiceItem id: nil, quantity: 4>, #<InvoiceItem id: nil, quantity: 7>, #<InvoiceItem id: nil, quantity: 5>, ...]
+
+# irb(main):080:0> inv2.items.joins(merchant: :bulk_discounts).select('invoice_items.quantity AS quantity, bulk_discounts.threshold AS threshold, invoice_items.id AS inv_item_id').where('quantity > threshold').first.inv_item_id
+#   Item Load (10.4ms)  SELECT  invoice_items.quantity AS quantity, bulk_discounts.threshold AS threshold, invoice_items.id AS inv_item_id FROM "items" INNER JOIN "merchants" ON "merchants"."id" = "items"."merchant_id" INNER JOIN "bulk_discounts" ON "bulk_discounts"."merchant_id" = "merchants"."id" INNER JOIN "invoice_items" ON "items"."id" = "invoice_items"."item_id" WHERE "invoice_items"."invoice_id" = $1 AND (quantity > threshold) ORDER BY "items"."id" ASC LIMIT $2  [["invoice_id", 29], ["LIMIT", 1]]
+# => 135
+
+# irb(main):112:0> inv2.items.joins(merchant: :bulk_discounts).select('invoice_items.quantity, bulk_discounts.threshold, bulk_discounts.percentage, invoice_items.*').where('invoice_items.quantity >= bulk_discounts.threshold').first.invoice_items
+#   Item Load (7.3ms)  SELECT  invoice_items.quantity, bulk_discounts.threshold, bulk_discounts.percentage, invoice_items.* FROM "items" INNER JOIN "merchants" ON "merchants"."id" = "items"."merchant_id" INNER JOIN "bulk_discounts" ON "bulk_discounts"."merchant_id" = "merchants"."id" INNER JOIN "invoice_items" ON "items"."id" = "invoice_items"."item_id" WHERE "invoice_items"."invoice_id" = $1 AND (invoice_items.quantity >= bulk_discounts.threshold) ORDER BY "items"."id" ASC LIMIT $2  [["invoice_id", 29], ["LIMIT", 1]]
+#   InvoiceItem Load (0.5ms)  SELECT  "invoice_items".* FROM "invoice_items" WHERE "invoice_items"."item_id" = $1 LIMIT $2  [["item_id", 135], ["LIMIT", 11]]
+# => #<ActiveRecord::Associations::CollectionProxy [#<InvoiceItem id: 2625, item_id: 135, invoice_id: 587, quantity: 3, unit_price: 10653, status: "packaged", created_at: "2012-03-27 14:54:38", updated_at: "2012-03-27 14:54:38">]>
+
+# inv2.items.joins(:bulk_discounts).merge(inv2.eligible_for_discounts).select('bulk_discounts.*, MAX(percentage)')
+
+# inv2.items.joins(merchant: :bulk_discounts).select('MAX(bulk_discounts.percentage), invoice_items.quantity, bulk_discounts.threshold, invoice_items.*')
+# .where('invoice_items.quantity >= bulk_discounts.threshold')
+# .group('merchant.merchant_id = 8')
+
+# inv2.items.joins(merchant: :bulk_discounts).select('SUM(invoice_items.unit_price * invoice_items.quantity) AS revenue, bulk_discounts.threshold, bulk_discounts.percentage, invoice_items.*').where('invoice_items.quantity >= bulk_discounts.threshold')
+
+
 
 ### This was for a footer view
 <% session[:user_names].each do |name| %>
