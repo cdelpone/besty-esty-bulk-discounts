@@ -4,7 +4,6 @@
   <li class="nav-item"><p class="nav-link px-2 text-muted">Collaborators: <%= @github_api_data.repo_names_and_commits.to_sentence %>, generating <%= @github_api_data.pulls_count %> pull requests.</p></li>
 <% end %>
 
-
 ### This was for a footer view
 <% session[:user_names].each do |name| %>
   <% unless name.last %>

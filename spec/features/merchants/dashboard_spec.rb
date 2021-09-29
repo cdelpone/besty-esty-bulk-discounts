@@ -9,8 +9,8 @@ RSpec.describe 'Merchant Dashboard Show Page' do
     let!(:customer4) { create :customer }
     let!(:customer5) { create :customer }
     let!(:customer6) { create :customer }
-    let!(:bulk_discountA) { create :bulk_discount, { merchant_id: merchant1.id, quantity: 10, percentage: 0.20 }  }
-    let!(:bulk_discountB) { create :bulk_discount, { merchant_id: merchant1.id, quantity: 15, percentage: 0.30 }  }
+    let!(:bulk_discountA) { create :bulk_discount, { merchant_id: merchant1.id, threshold: 10, percentage: 0.20 }  }
+    let!(:bulk_discountB) { create :bulk_discount, { merchant_id: merchant1.id, threshold: 15, percentage: 0.30 }  }
     let!(:item1) { create :item, { merchant_id: merchant1.id } }
     let!(:item2) { create :item, { merchant_id: merchant1.id } }
     let!(:item3) { create :item, { merchant_id: merchant1.id } }

@@ -6,7 +6,7 @@ class BulkDiscountsController < ApplicationController
   end
 
   def show
-    @bulk_discount = BulkDiscount.find(params[:id])
+    current_bulk_discount
   end
 
   def new
@@ -30,11 +30,11 @@ class BulkDiscountsController < ApplicationController
   end
 
   def edit
-    @bulk_discount = BulkDiscount.find(params[:id])
+    current_bulk_discount
   end
 
   def update
-    @bulk_discount = BulkDiscount.find(params[:id])
+    current_bulk_discount
     if @bulk_discount.update(bulk_discount_params)
       flash[:success] = 'Successfully Updated'
       redirect_to merchant_bulk_discount_path(@merchant, @bulk_discount)
@@ -51,6 +51,6 @@ class BulkDiscountsController < ApplicationController
   end
 
   def bulk_discount_params
-    params.require(:bulk_discount).permit(:quantity, :percentage)
+    params.require(:bulk_discount).permit(:threshold, :percentage)
   end
 end
