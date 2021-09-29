@@ -12,9 +12,6 @@ RSpec.describe 'Admin Invoice Show Page' do
 
     @invoice = create(:invoice, customer_id: @customer.id)
 
-    # @invoice_item_1 = create(:invoice_item, item_id: @item_1.id, invoice_id: @invoice.id, unit_price: 1)
-    # @invoice_item_2 = create(:invoice_item, item_id: @item_2.id, invoice_id: @invoice.id, unit_price: 1)
-    # @invoice_item_3 = create(:invoice_item, item_id: @item_3.id, invoice_id: @invoice.id, unit_price: 1)
     @invoice_item_1 = create :invoice_item,
                             { invoice_id: @invoice.id, item_id: @item_1.id, unit_price: 50, quantity: 2, status: 0 }
     @invoice_item_2 = create :invoice_item,
