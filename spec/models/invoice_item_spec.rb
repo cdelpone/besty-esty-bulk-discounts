@@ -69,8 +69,8 @@ RSpec.describe InvoiceItem, type: :model do
     it 'can return the discount id that was applied' do
       bulk_discountA = create :bulk_discount, { id: 5, merchant_id: merchant.id, threshold: 2, percentage: 25 }
       bulk_discountB = create :bulk_discount, { id: 6, merchant_id: merchant.id, threshold: 3, percentage: 50 }
-      expect(inv_item1.discount_id_applied).to eq(6)
-      expect(inv_item2.discount_id_applied).to eq(5)
+      expect(inv_item1.discount_applied.id).to eq(6)
+      expect(inv_item2.discount_applied.id).to eq(5)
     end
   end
 end
