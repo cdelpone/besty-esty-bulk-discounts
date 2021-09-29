@@ -50,7 +50,7 @@ RSpec.describe 'Merchant Bulk Discount Edit Page' do
 
         fill_in 'Threshold', with: '1'
         fill_in 'Percentage', with: '125'
-
+ 
         click_button 'Submit'
       end
       within '#form' do

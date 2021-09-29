@@ -11,8 +11,8 @@ RSpec.describe 'Merchant Bulk Discounts Index Page' do
       @service = PublicHolidaysService.new
 
       @merchant1 = create :merchant
-      @bulk_discountA = create :bulk_discount, { merchant_id: @merchant1.id, threshold: 10, percentage: 0.20 }
-      @bulk_discountB = create :bulk_discount, { merchant_id: @merchant1.id, threshold: 15, percentage: 0.30 }
+      @bulk_discountA = create :bulk_discount, { merchant_id: @merchant1.id, threshold: 10, percentage: 20 }
+      @bulk_discountB = create :bulk_discount, { merchant_id: @merchant1.id, threshold: 15, percentage: 30 }
 
       visit merchant_bulk_discounts_path(@merchant1)
     end
