@@ -9,7 +9,7 @@
       <p>Customer Name: <%= @invoice.customer.full_name %></p>
     </div>
     <div class="col border">
-      <p>Total Revenue After Discounts Applied: <%= number_to_currency(@invoice.total_revenue) %></p>
+      <p>Total Revenue After Discounts Applied: <%= number_to_currency(@invoice.total_discounted_revenue) %></p>
     </div>
   </div>
   <div class="row border">
@@ -31,6 +31,7 @@
       <th scope="col">Item Name</th>
       <th scope="col">Quantity</th>
       <th scope="col">Unit Price</th>
+      <th scope="col">Discount Applied</th>
       <th scope="col">Status</th>
     </tr>
   </thead>
@@ -40,6 +41,7 @@
       <td><%= inv_item.item.name %></td>
       <td><%= inv_item.quantity %></td>
       <td><%= number_to_currency(inv_item.unit_price.fdiv(100)) %></td>
+      <td><%= link_to inv_item.discount_id_applied, merchant_bulk_discount_path(@merchant, inv_item.discount_id_applied) %></td>
       <td><div id="inv_item-<%= inv_item.id %>">
           <%= form_with model: [@merchant, inv_item], local: true do |f| %>
             <%= f.select(:status, ['pending', 'packaged', 'shipped'], value: inv_item.status) %>
