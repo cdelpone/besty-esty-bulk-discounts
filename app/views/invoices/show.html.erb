@@ -9,7 +9,14 @@
       <p>Customer Name: <%= @invoice.customer.full_name %></p>
     </div>
     <div class="col border">
-      <p>Total Revenue After Discounts Applied: <%= number_to_currency(@invoice.total_discounted_revenue) %></p>
+      <p>Total Revenue After Discounts Applied:
+        <% @invoice_items.each do |inv_item|  %>
+          <% if !inv_item.discount_applied.nil? %>
+            <%= number_to_currency(@invoice.total_discounted_revenue) %>
+          <% else %>
+            <p>no discount applied </p>
+          <% end %>
+        <% end %>
     </div>
   </div>
   <div class="row border">

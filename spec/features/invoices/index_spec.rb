@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 require 'rails_helper'
 # rspec spec/features/invoices/index_spec.rb
 RSpec.describe 'Merchant Invoices Index Page' do
@@ -24,6 +22,8 @@ RSpec.describe 'Merchant Invoices Index Page' do
                               { invoice_id: @invoice2.id, item_id: @item2.id, unit_price: 100, quantity: 1 }
       @invoice_item3 = create :invoice_item,
                               { invoice_id: @invoice3.id, item_id: @item3.id, unit_price: 200, quantity: 1 }
+      @bulk_discountA = create :bulk_discount, { merchant_id: @merchant.id, threshold: 1, percentage: 20 }
+      @bulk_discountB = create :bulk_discount, { merchant_id: @merchant.id, threshold: 1, percentage: 30 }
 
       visit merchant_invoices_path(@merchant)
     end
@@ -37,7 +37,7 @@ RSpec.describe 'Merchant Invoices Index Page' do
     it 'links each invoice ID to show page' do
       expect(page).to have_link(@invoice1.id)
 
-      click_link @invoice1.id
+      click_link (@invoice1.id)
 
       expect(current_path).to eq(merchant_invoice_path(@merchant, @invoice1))
     end

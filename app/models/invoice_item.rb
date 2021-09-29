@@ -21,7 +21,11 @@ class InvoiceItem < ApplicationRecord
   end
 
   def discount_applied
-    item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.percentage
+    if item.merchant.bulk_discounts.select(:percentage).nil?
+      return revenue
+    else
+      item.merchant.bulk_discounts.where('threshold <= ?', quantity).order(:percentage).last.percentage
+    end
   end
 
   def discount_id_applied
