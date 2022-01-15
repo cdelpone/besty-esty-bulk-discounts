@@ -1,4 +1,4 @@
-###  [Besty Esty](https://besty-esty-bulk-discounts.herokuapp.com/)
+##  [Besty Esty - Bulk Discounts App](https://besty-esty-bulk-discounts.herokuapp.com/)
 ## Table of contents
 * [General info](#general-info)
 * [Screenshots](#screenshots)
